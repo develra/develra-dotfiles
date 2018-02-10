@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# necessary to make chrome pick up the proxy settings stored in gconf.
+export DESKTOP_SESSION=cinnamon
+
+# Background color
+xsetroot -solid "#333333"
+
+# Start urxvtd
+urxvtd -q -f -o
+
+# Remap Capslock to Escape
+setxkbmap -option caps:escape
+
+# Start wmi3
+exec i3

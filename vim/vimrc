@@ -1,0 +1,142 @@
+" Use Vim settings, rather then Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set nocompatible
+
+" ================ General Config ====================
+set number                      "Line numbers are good
+set backspace=indent,eol,start  "Allow backspace in insert mode
+set history=1000                "Store lots of :cmdline history
+set showcmd                     "Show incomplete cmds down the bottom
+set showmode                    "Show current mode down the bottom
+set autoread                    "Reload files changed outside vim
+set foldmethod=indent           "Fold files based on indentation
+set hidden                      "let buffer be open with no window 
+let mapleader=" "               "Change leader to spacebar
+
+" ================ Syntax and Colors =================
+"turn on syntax highlighting
+syntax on
+set background=dark
+let g:solarized_termcolors=256
+colorscheme gruvbox
+" but only for lines 240 characters or less
+set synmaxcol=240
+set nocursorline
+" Display tabs and trailing spaces visually
+set list listchars=tab:\ \ ,trail:·
+set nowrap       "Don't wrap lines
+set linebreak    "Wrap lines at convenient points
+
+" ================ Turn Off Swap Files ===============
+
+set noswapfile
+set nobackup
+set nowb
+
+" ================ Persistent Undo ===================
+" Keep undo history across sessions, by storing in file.
+let vimDir = '$HOME/.vim'
+let &runtimepath.=','.vimDir
+
+" Keep undo history across sessions by storing it in a file
+if has('persistent_undo')
+    let myUndoDir = expand(vimDir . '/undodir')
+    " Create dirs
+    call system('mkdir ' . vimDir)
+    call system('mkdir ' . myUndoDir)
+    let &undodir = myUndoDir
+    set undofile
+endif
+
+" ================ Indentation ======================
+
+set autoindent
+set smartindent
+set smarttab
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+set expandtab
+
+" ================ Folds =============================
+
+set foldmethod=indent   "fold based on indent
+set foldnestmax=4       "deepest fold is 4 levels
+set nofoldenable        "dont fold by default
+
+" ================ Completion ========================
+
+set wildmode=list:longest
+set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
+set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
+set wildignore+=*vim/backups*
+set wildignore+=*sass-cache*
+set wildignore+=*DS_Store*
+set wildignore+=vendor/rails/**
+set wildignore+=vendor/cache/**
+set wildignore+=*.gem
+set wildignore+=log/**
+set wildignore+=tmp/**
+set wildignore+=*.png,*.jpg,*.gif
+
+" ================ Search ============================
+
+set incsearch       " Find the next match as we type the search
+set hlsearch        " Highlight searches by default
+set ignorecase      " Ignore case when searching...
+set smartcase       " ...unless we type a capital
+
+" ============== Key Bindings ========================
+" leader+mr to run MRU
+nnoremap <leader>mr :MRU<CR>
+" leader+z to toggle folds
+nnoremap <leader>z za
+" Open the project tree and expose current file in the nerdtree with Leader+fe
+nnoremap <silent> <leader>fe :NERDTreeFind<CR>:vertical<CR>
+" Move between vim split windows by using the arrow keys
+ nnoremap <silent> <Left> <C-w>h
+ nnoremap <silent> <Right> <C-w>l
+ nnoremap <silent> <Up> <C-w>k
+ nnoremap <silent> <Down> <C-w>j
+" Create vertical window splits easier. 
+nnoremap <silent> vv <C-w>v
+" copy current filename into system clipboard - mnemonic: (c)urrent(f)ilename
+nnoremap <silent> <leader>cf :let @* = expand("%:~")<CR>
+"(v)im (r)eload
+nmap <silent> vr :so %<CR>
+"Clear current search highlight by double tapping //
+nmap <silent> // :nohlsearch<CR>
+" w!! to write a file as sudo
+cmap w!! w !sudo tee % >/dev/null
+
+" ===============  Plugins ===========================
+" Golden Ratio
+let g:golden_ratio_exclude_nonmodifiable = 1
+" MRU
+let MRU_Max_Entries = 1000
+" NerdTree
+    " Make nerdtree look nice
+let NERDTreeDirArrows = 1
+let g:NERDTreeWinSize = 30
+    " Close nerdtree after a file is selected 
+let NERDTreeQuitOnOpen=1
+" Syntastic
+    "mark syntax errors with :signs
+let g:syntastic_enable_signs=1
+    "automatically jump to the error when saving the file
+let g:syntastic_auto_jump=0
+    "show the error list automatically
+let g:syntastic_auto_loc_list=1
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_aggregate_errors = 1
+    "Shrink the error window a bit
+let g:syntastic_loc_list_height=4
+    "Configure Which syntastic checker to use
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_typescript_checkers = ['tsuquyomi', 'tslint']
+let g:syntastic_python_checkers = ['pylint']
+
+" ================ Experiments =======================

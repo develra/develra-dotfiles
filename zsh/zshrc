@@ -1,0 +1,90 @@
+setopt histignorealldups sharehistory
+
+# Keep 2000 lines of history within the shell and save it to ~/.zsh_history:
+HISTSIZE=2000
+SAVEHIST=2000
+HISTFILE=~/.zsh_history
+
+# Use modern completion system
+autoload -Uz compinit
+compinit
+
+zstyle ':completion:*' auto-description 'specify: %d'
+zstyle ':completion:*' completer _expand _complete _correct _approximate
+zstyle ':completion:*' format 'Completing %d'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' menu select=2
+eval "$(dircolors -b)"
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+zstyle ':completion:*' menu select=long
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle ':completion:*' use-compctl false
+zstyle ':completion:*' verbose true
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+
+#Develra Prompt
+source /home/michaelaaron/OpenSource/develra-dotfiles/zsh/plugins/git_prompt.zsh
+local host_name="%{$fg[green]%}$(hostname)"
+local path_string="%{$fg[cyan]%}%~"
+local prompt_string="%{$fg[white]%} $ "
+NEWLINE=$'\n'
+PROMPT='${host_name}:${path_string}:$(git_prompt_string)${NEWLINE}${prompt_string}'
+
+# path
+path=(
+  $path
+  $HOME/bin
+)
+
+# Personal Aliases
+alias todo='vim ~/todo.txt'
+alias take='sudo chown -R $(whoami):admin'
+alias untake='sudo chown -R root'
+alias c='clear'
+alias ze='vim ~/.zshrc'
+alias zr='source ~/.zshrc'
+alias ve='vim ~/.vimrc'
+
+# Devices nonsense
+# connect monitor home
+alias cmh='xrandr --output HDMI-1 --auto --panning 3840x2160+3840+0 --scale 2x2 --right-of eDP-1'
+# connect monitor work
+alias cmw='xrandr --output HDMI-1 --auto --panning 3840x2160+3840+0 --scale 2x1.8 --right-of eDP-1'
+# connect monitor self (reset after disconnect)
+alias cms='xrandr --auto'
+
+# Add a plugin to vim based on the git repo name, similar to Vundle
+function vap(){
+    cd $(readlink -f ~/.vim)
+    git submodule add https://github.com/$1 ./pack/plugins/start/$(basename $1 .git)
+}
+
+# remove a plugin to vim based on the git repo name, similar to Vundle
+function vrp(){
+    cd $(readlink -f ~/.vim)
+    git submodule deinit -f -- ./pack/plugins/start/$(basename $1 .git)
+    rm -fr ../.git/modules/vim/pack/plugins/start/$(basename $1 .git)
+    git rm -f ./pack/plugins/start/$(basename $1 .git)
+}
+
+# Global Aliases
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+alias -g ......='../../../../..'
+
+# Vim for Life
+bindkey -v                                          # Use vi key bindings in zsh
+export KEYTIMEOUT=1				                    # Reduce transition delay to .4 (default) -> .1 sec
+set -o vi
+export EDITOR=vim
+export VISUAL=vim
+
+# Bash has some nice stuff sometimes I guess
+bindkey '^r' history-incremental-search-backward    # [Ctrl-r] - Search backward incrementally for a specified string. The string may begin with ^ to anchor the search to the beginning of the line.
+bindkey '^[[A' history-beginning-search-backward 
+bindkey '^[[B' history-beginning-search-forward

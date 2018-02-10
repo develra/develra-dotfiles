@@ -1,0 +1,1 @@
+/home/michaelaaron/.i3

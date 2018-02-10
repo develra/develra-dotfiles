@@ -1,0 +1,24 @@
+[submodule "vim/pack/plugins/start/gruvbox"]
+	path = vim/pack/plugins/start/gruvbox
+	url = https://github.com/morhetz/gruvbox
+[submodule "vim/pack/plugins/start/golden-ratio"]
+	path = vim/pack/plugins/start/golden-ratio
+	url = https://github.com/roman/golden-ratio
+[submodule "vim/pack/plugins/start/vim-javascript"]
+	path = vim/pack/plugins/start/vim-javascript
+	url = https://github.com/pangloss/vim-javascript
+[submodule "vim/pack/plugins/start/tsuquyomi"]
+	path = vim/pack/plugins/start/tsuquyomi
+	url = https://github.com/quramy/tsuquyomi
+[submodule "vim/pack/plugins/start/typescript-vim"]
+	path = vim/pack/plugins/start/typescript-vim
+	url = https://github.com/leafgarland/typescript-vim
+[submodule "vim/pack/plugins/start/nerdtree"]
+	path = vim/pack/plugins/start/nerdtree
+	url = https://github.com/scrooloose/nerdtree
+[submodule "vim/pack/plugins/start/mru"]
+	path = vim/pack/plugins/start/mru
+	url = https://github.com/yegappan/mru
+[submodule "vim/pack/plugins/start/syntastic"]
+	path = vim/pack/plugins/start/syntastic
+	url = https://github.com/vim-syntastic/syntastic

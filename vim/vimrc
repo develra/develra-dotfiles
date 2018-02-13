@@ -13,6 +13,44 @@ set foldmethod=indent           "Fold files based on indentation
 set hidden                      "let buffer be open with no window 
 let mapleader=" "               "Change leader to spacebar
 
+" ================ Initialize Plugins ================
+"
+"
+" Required:
+set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
+
+" Required:
+if dein#load_state('~/.vim/dein')
+  call dein#begin('~/.vim/dein')
+
+  " Let dein manage dein
+  " Required:
+  call dein#add('~/.vim/dein/repos/github.com/Shougo/dein.vim')
+
+  " Add or remove your plugins here:
+  call dein#add('morhetz/gruvbox')
+  call dein#add('roman/golden-ratio')
+  call dein#add('pangloss/vim-javascript')
+  call dein#add('leafgarland/typescript-vim')
+  call dein#add('scrooloose/nerdtree')
+  call dein#add('yegappan/mru')
+  if has('nvim')
+      call dein#add('Shougo/deoplete.nvim')
+      call dein#add('w0rp/ale')
+      call dein#add('mhartington/nvim-typescript')
+  endif
+
+  " Required:
+  call dein#end()
+  call dein#save_state()
+endif
+
+syntax enable
+
+if dein#check_install()
+  call dein#install()
+endif
+
 " ================ Syntax and Colors =================
 "turn on syntax highlighting
 syntax on
@@ -50,6 +88,7 @@ endif
 
 " ================ Indentation ======================
 
+filetype indent on
 set autoindent
 set smartindent
 set smarttab
@@ -69,15 +108,8 @@ set nofoldenable        "dont fold by default
 set wildmode=list:longest
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
-set wildignore+=*vim/backups*
-set wildignore+=*sass-cache*
-set wildignore+=*DS_Store*
-set wildignore+=vendor/rails/**
-set wildignore+=vendor/cache/**
-set wildignore+=*.gem
 set wildignore+=log/**
 set wildignore+=tmp/**
-set wildignore+=*.png,*.jpg,*.gif
 
 " ================ Search ============================
 
@@ -89,6 +121,8 @@ set smartcase       " ...unless we type a capital
 " ============== Key Bindings ========================
 " leader+mr to run MRU
 nnoremap <leader>mr :MRU<CR>
+" leader+gr to run GoldenRatio
+nnoremap <leader>gr :GoldenRatioResize
 " leader+z to toggle folds
 nnoremap <leader>z za
 " Open the project tree and expose current file in the nerdtree with Leader+fe
@@ -109,34 +143,25 @@ nmap <silent> // :nohlsearch<CR>
 " w!! to write a file as sudo
 cmap w!! w !sudo tee % >/dev/null
 
-" ===============  Plugins ===========================
+" ===============  Plugin Configuration ================ 
+filetype plugin on
 " Golden Ratio
 let g:golden_ratio_exclude_nonmodifiable = 1
+let g:golden_ratio_autocommand = 0
 " MRU
 let MRU_Max_Entries = 1000
+" Neoplete
+let g:deoplete#enable_at_startup = 1
 " NerdTree
     " Make nerdtree look nice
 let NERDTreeDirArrows = 1
 let g:NERDTreeWinSize = 30
     " Close nerdtree after a file is selected 
 let NERDTreeQuitOnOpen=1
-" Syntastic
-    "mark syntax errors with :signs
-let g:syntastic_enable_signs=1
-    "automatically jump to the error when saving the file
-let g:syntastic_auto_jump=0
-    "show the error list automatically
-let g:syntastic_auto_loc_list=1
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_aggregate_errors = 1
-    "Shrink the error window a bit
-let g:syntastic_loc_list_height=4
-    "Configure Which syntastic checker to use
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_typescript_checkers = ['tsuquyomi', 'tslint']
-let g:syntastic_python_checkers = ['pylint']
-
+" Ale
+let g:ale_list_window_size=4
+let g:ale_open_list=1
+let g:ale_lint_on_text_changed='never'
+let g:ale_lint_on_insert_leave=1
+autocmd FileType qf setlocal wrap
 " ================ Experiments =======================

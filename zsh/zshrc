@@ -37,6 +37,7 @@ PROMPT='${host_name}:${path_string}:$(git_prompt_string)${NEWLINE}${prompt_strin
 # path
 path=(
   $path
+  $HOME/Stash/phoenix-sdk/third-party/protoc/
   $HOME/bin
 )
 
@@ -60,7 +61,11 @@ alias cms='xrandr --auto'
 # Add a plugin to vim based on the git repo name, similar to Vundle
 function vap(){
     cd $(readlink -f ~/.vim)
-    git submodule add https://github.com/$1 ./pack/plugins/start/$(basename $1 .git)
+    #vim8 native plugins
+    #git submodule add https://github.com/$1 ./pack/plugins/start/$(basename $1 .git)
+    #dein neovim
+    git submodule add https://github.com/$1 ./dein/repos/github.com/$(basename $1 .git)
+
 }
 
 # remove a plugin to vim based on the git repo name, similar to Vundle
@@ -77,14 +82,19 @@ alias -g ....='../../..'
 alias -g .....='../../../..'
 alias -g ......='../../../../..'
 
-# Vim for Life
+# (Neo)Vim for Life
+alias vi=nvim
+alias vim=nvim
 bindkey -v                                          # Use vi key bindings in zsh
 export KEYTIMEOUT=1				                    # Reduce transition delay to .4 (default) -> .1 sec
 set -o vi
-export EDITOR=vim
-export VISUAL=vim
+export EDITOR=nvim
+export VISUAL=nvim
 
 # Bash has some nice stuff sometimes I guess
 bindkey '^r' history-incremental-search-backward    # [Ctrl-r] - Search backward incrementally for a specified string. The string may begin with ^ to anchor the search to the beginning of the line.
 bindkey '^[[A' history-beginning-search-backward 
 bindkey '^[[B' history-beginning-search-forward
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm

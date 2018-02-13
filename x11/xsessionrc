@@ -12,5 +12,8 @@ urxvtd -q -f -o
 # Remap Capslock to Escape
 setxkbmap -option caps:escape
 
+# Chrome seems to flicker without xcompmgr on Rodete
+xcompmgr -c &
+
 # Start wmi3
 exec i3

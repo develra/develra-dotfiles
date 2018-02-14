@@ -9,8 +9,8 @@ xsetroot -solid "#333333"
 # Start urxvtd
 urxvtd -q -f -o
 
-# Remap Capslock to Escape
-setxkbmap -option caps:escape
+# avoid SSH_AUTH_SOCK errors
+eval $(keychain --eval --agents ssh id_rsa)
 
 # Chrome seems to flicker without xcompmgr on Rodete
 xcompmgr -c &

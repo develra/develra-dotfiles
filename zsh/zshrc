@@ -82,6 +82,9 @@ alias -g ....='../../..'
 alias -g .....='../../../..'
 alias -g ......='../../../../..'
 
+# Remap Capslock to Escape
+setxkbmap -option caps:escape
+
 # (Neo)Vim for Life
 alias vi=nvim
 alias vim=nvim

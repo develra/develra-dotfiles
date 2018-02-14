@@ -12,14 +12,13 @@ set autoread                    "Reload files changed outside vim
 set foldmethod=indent           "Fold files based on indentation
 set hidden                      "let buffer be open with no window 
 let mapleader=" "               "Change leader to spacebar
+autocmd FileType qf setlocal wrap
 
 " ================ Initialize Plugins ================
 "
 "
-" Required:
 set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
 
-" Required:
 if dein#load_state('~/.vim/dein')
   call dein#begin('~/.vim/dein')
 
@@ -36,8 +35,8 @@ if dein#load_state('~/.vim/dein')
   call dein#add('yegappan/mru')
   if has('nvim')
       call dein#add('Shougo/deoplete.nvim')
-      call dein#add('w0rp/ale')
       call dein#add('mhartington/nvim-typescript')
+      call dein#add('w0rp/ale')
   endif
 
   " Required:
@@ -122,7 +121,7 @@ set smartcase       " ...unless we type a capital
 " leader+mr to run MRU
 nnoremap <leader>mr :MRU<CR>
 " leader+gr to run GoldenRatio
-nnoremap <leader>gr :GoldenRatioResize
+nnoremap <leader>gr :GoldenRatioToggle<CR>
 " leader+z to toggle folds
 nnoremap <leader>z za
 " Open the project tree and expose current file in the nerdtree with Leader+fe
@@ -163,5 +162,4 @@ let g:ale_list_window_size=4
 let g:ale_open_list=1
 let g:ale_lint_on_text_changed='never'
 let g:ale_lint_on_insert_leave=1
-autocmd FileType qf setlocal wrap
 " ================ Experiments =======================

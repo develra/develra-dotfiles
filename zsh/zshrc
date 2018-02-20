@@ -55,26 +55,10 @@ alias ve='vim ~/.vimrc'
 alias cmh='xrandr --output HDMI-1 --auto --panning 3840x2160+3840+0 --scale 2x2 --right-of eDP-1'
 # connect monitor work
 alias cmw='xrandr --output HDMI-1 --auto --panning 3840x2160+3840+0 --scale 2x1.8 --right-of eDP-1'
+# connect monitor on treadmill
+alias cmt='xrandr --output HDMI-1 --auto --scale 2x2 --above eDP-1'
 # connect monitor self (reset after disconnect)
 alias cms='xrandr --auto'
-
-# Add a plugin to vim based on the git repo name, similar to Vundle
-function vap(){
-    cd $(readlink -f ~/.vim)
-    #vim8 native plugins
-    #git submodule add https://github.com/$1 ./pack/plugins/start/$(basename $1 .git)
-    #dein neovim
-    git submodule add https://github.com/$1 ./dein/repos/github.com/$(basename $1 .git)
-
-}
-
-# remove a plugin to vim based on the git repo name, similar to Vundle
-function vrp(){
-    cd $(readlink -f ~/.vim)
-    git submodule deinit -f -- ./pack/plugins/start/$(basename $1 .git)
-    rm -fr ../.git/modules/vim/pack/plugins/start/$(basename $1 .git)
-    git rm -f ./pack/plugins/start/$(basename $1 .git)
-}
 
 # Global Aliases
 alias -g ...='../..'

@@ -34,8 +34,8 @@ if dein#load_state('~/.vim/dein')
   call dein#add('scrooloose/nerdtree')
   call dein#add('yegappan/mru')
   if has('nvim')
-      call dein#add('Shougo/deoplete.nvim')
       call dein#add('mhartington/nvim-typescript')
+      call dein#add('Shougo/deoplete.nvim')
       call dein#add('w0rp/ale')
   endif
 
@@ -162,4 +162,6 @@ let g:ale_list_window_size=4
 let g:ale_open_list=1
 let g:ale_lint_on_text_changed='never'
 let g:ale_lint_on_insert_leave=1
+let g:ale_linters = {'javascript': ['eslint']}
+
 " ================ Experiments =======================

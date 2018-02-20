@@ -2,6 +2,6 @@ vim/undodir
 vim/.netrwhist
 vim/dein/.cache
 vim/dein/repos/github.com/.cache
-vim/dein/cache_vim
-vim/dein/state_vim.vim
+vim/dein/cache_*
+vim/dein/state_*
 

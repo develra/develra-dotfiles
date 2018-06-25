@@ -3,14 +3,11 @@
 # necessary to make chrome pick up the proxy settings stored in gconf.
 export DESKTOP_SESSION=cinnamon
 
-# Background color
-xsetroot -solid "#333333"
-
-# Start urxvtd
-urxvtd -q -f -o
-
 # avoid SSH_AUTH_SOCK errors
 eval $(keychain --eval --agents ssh id_rsa)
+
+# XTerm is being weird with Xresources, use urxvt instead
+export TERMINAL=urxvt
 
 # Chrome seems to flicker without xcompmgr on Rodete
 xcompmgr -c &

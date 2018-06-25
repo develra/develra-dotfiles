@@ -127,10 +127,10 @@ nnoremap <leader>z za
 " Open the project tree and expose current file in the nerdtree with Leader+fe
 nnoremap <silent> <leader>fe :NERDTreeFind<CR>:vertical<CR>
 " Move between vim split windows by using the arrow keys
- nnoremap <silent> <Left> <C-w>h
- nnoremap <silent> <Right> <C-w>l
- nnoremap <silent> <Up> <C-w>k
- nnoremap <silent> <Down> <C-w>j
+nnoremap <silent> <Left> <C-w>h
+nnoremap <silent> <Right> <C-w>l
+nnoremap <silent> <Up> <C-w>k
+nnoremap <silent> <Down> <C-w>j
 " Create vertical window splits easier. 
 nnoremap <silent> vv <C-w>v
 " copy current filename into system clipboard - mnemonic: (c)urrent(f)ilename
@@ -141,6 +141,11 @@ nmap <silent> vr :so %<CR>
 nmap <silent> // :nohlsearch<CR>
 " w!! to write a file as sudo
 cmap w!! w !sudo tee % >/dev/null
+" buffer next/previous with leader
+nnoremap <leader>bn :bn<CR>
+nnoremap <leader>bp :bp<CR>
+" Easier fixing
+nnoremap <leader>fa :ALEFix<CR>
 
 " ===============  Plugin Configuration ================ 
 filetype plugin on
@@ -152,10 +157,8 @@ let MRU_Max_Entries = 1000
 " Neoplete
 let g:deoplete#enable_at_startup = 1
 " NerdTree
-    " Make nerdtree look nice
 let NERDTreeDirArrows = 1
 let g:NERDTreeWinSize = 30
-    " Close nerdtree after a file is selected 
 let NERDTreeQuitOnOpen=1
 " Ale
 let g:ale_list_window_size=4
@@ -163,5 +166,6 @@ let g:ale_open_list=1
 let g:ale_lint_on_text_changed='never'
 let g:ale_lint_on_insert_leave=1
 let g:ale_linters = {'javascript': ['eslint']}
-
+let g:ale_fixers = {'javascript': ['eslint']}
+let g:ale_completion_enabled=1
 " ================ Experiments =======================

@@ -38,19 +38,26 @@ PROMPT='${host_name}:${path_string}:$(git_prompt_string)${NEWLINE}${prompt_strin
 path=(
   $path
   $HOME/Stash/phoenix-sdk/third-party/protoc/
+  $HOME/Stash/wulfcli/src/bin/
   $HOME/bin
 )
 
 # Personal Aliases
 alias todo='vim ~/todo.txt'
-alias take='sudo chown -R $(whoami):admin'
+alias scratch='vim ~/scratch.txt'
+alias take='sudo chown -R $(whoami)'
 alias untake='sudo chown -R root'
-alias c='clear'
+# -x is to not wipe out the xterm history buffer
+alias c='clear -x'
+alias clear='clear -x'
 alias ze='vim ~/.zshrc'
 alias zr='source ~/.zshrc'
 alias ve='vim ~/.vimrc'
+alias gg='git grep'
 
 # Devices nonsense
+# connect bluetooth headphones
+alias cah='echo "connect 70:88:6B:90:09:05" | bluetoothctl'
 # connect monitor home
 alias cmh='xrandr --output HDMI-1 --auto --panning 3840x2160+3840+0 --scale 2x2 --right-of eDP-1'
 # connect monitor work
@@ -59,6 +66,9 @@ alias cmw='xrandr --output HDMI-1 --auto --panning 3840x2160+3840+0 --scale 2x1.
 alias cmt='xrandr --output HDMI-1 --auto --scale 2x2 --above eDP-1'
 # connect monitor self (reset after disconnect)
 alias cms='xrandr --auto'
+
+#Pi farm
+alias sshpi-io='ssh pi@100.107.62.70'
 
 # Global Aliases
 alias -g ...='../..'

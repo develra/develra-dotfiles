@@ -37,6 +37,7 @@ PROMPT='${host_name}:${path_string}:$(git_prompt_string)${NEWLINE}${prompt_strin
 # path
 path=(
   $path
+  /opt/intellij-ce-stable/bin/
   $HOME/Stash/phoenix-sdk/third-party/protoc/
   $HOME/Stash/wulfcli/src/bin/
   $HOME/bin
@@ -54,6 +55,7 @@ alias ze='vim ~/.zshrc'
 alias zr='source ~/.zshrc'
 alias ve='vim ~/.vimrc'
 alias gg='git grep'
+function vgg() { nvim `git grep --files-with-matches "$@"`; }
 
 # Devices nonsense
 # connect bluetooth headphones
@@ -69,6 +71,15 @@ alias cms='xrandr --auto'
 
 #Pi farm
 alias sshpi-io='ssh pi@100.107.62.70'
+alias sshpi-wbr='ssh pi@10.0.1.53'
+alias ssh-stomoco-local='ssh develra@10.1.10.28 -p 20100 -t zsh'
+alias ssh-stomoco='ssh develra@161.97.217.86 -p 20100 -t zsh'
+
+#Kaggle stuff
+alias kaggle-up='~/kaggle/kaggleazure/web/dev/up.sh --no-web --no-frontend'
+alias kaggle-up-full='~/kaggle/kaggleazure/web/dev/up.sh'
+alias kaggle-down='~/kaggle/kaggleazure/web/dev/down.sh'
+alias kaggle-tunnel='~/kaggle/kaggleazure/web/dev/tunnel.sh'
 
 # Global Aliases
 alias -g ...='../..'
@@ -88,10 +99,27 @@ set -o vi
 export EDITOR=nvim
 export VISUAL=nvim
 
+#.Net
+export PATH=${PATH}:${HOME}/.dotnet
+
 # Bash has some nice stuff sometimes I guess
 bindkey '^r' history-incremental-search-backward    # [Ctrl-r] - Search backward incrementally for a specified string. The string may begin with ^ to anchor the search to the beginning of the line.
 bindkey '^[[A' history-beginning-search-backward 
 bindkey '^[[B' history-beginning-search-forward
 
+#OpenWeave toolchain
+export NRF5_SDK_ROOT=${HOME}/OpenSource/openweave-tools/nRF5_SDK
+export NRF5_TOOLS_ROOT=${HOME}/OpenSource/openweave-tools/nRF5-CLI
+export GNU_INSTALL_ROOT=${HOME}/OpenSource/openweave-tools/gcc-arm-none-eabi-7-2018-q2-update-linux/bin
+export PATH=${PATH}:${NRF5_TOOLS_ROOT}/nrfjprog
+
+#NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+# Warp Drive
+export fpath=(/home/michaelaaron/bin/wd $fpath)
+
+wd() {
+  . /home/michaelaaron/bin/wd/wd.sh
+}

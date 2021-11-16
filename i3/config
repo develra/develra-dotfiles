@@ -108,7 +108,7 @@ bindsym Mod1+minus scratchpad show
 # switch to workspace
 bindsym Mod1+1 workspace 1
 bindsym Mod1+2 workspace 2
-bindsym Mod1+3 workspace 3
+bindsym Mod1+3 workspace 4
 bindsym Mod1+4 workspace 4
 bindsym Mod1+5 workspace 5
 bindsym Mod1+6 workspace 6
@@ -183,6 +183,10 @@ bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle && killall 
 
 # Lemme know when I should update
 exec /usr/share/goobuntu-indicator/goobuntu_indicator.py
+
+#
+exec volumeicon 
+exec nm-applet
 #######################################################################
 # automatically start i3-config-wizard to offer the user to create a
 # keysym-based config which used their favorite modifier (alt or windows)

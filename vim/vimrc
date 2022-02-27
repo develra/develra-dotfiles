@@ -276,13 +276,13 @@ nmap <leader>qf  <Plug>(coc-fix-current)
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 " Run jest for current project
-nnoremap <leader>tp :call  CocAction('runCommand', 'jest.projectTest')
+nnoremap <leader>tp :call  CocAction('runCommand', 'jest.projectTest')<CR>
 " Run jest for current file
-nnoremap <leader>tf :call  CocAction('runCommand', 'jest.fileTest', ['%'])
+nnoremap <leader>tf :call  CocAction('runCommand', 'jest.fileTest', ['%'])<CR>
 " Run jest for current test
 nnoremap <leader>tt :call CocAction('runCommand', 'jest.singleTest')<CR>
 " Init jest in current cwd, require global jest command exists
-nnoremap <leader>ti :call CocAction('runCommand', 'jest.init')
+nnoremap <leader>ti :call CocAction('runCommand', 'jest.init')<CR>
 "(v)im (r)eload
 nmap <silent> vr :so %<CR>
 " Create vertical window splits easier. 

@@ -41,6 +41,7 @@ path=(
   $HOME/Stash/phoenix-sdk/third-party/protoc/
   $HOME/Stash/wulfcli/src/bin/
   $HOME/bin
+  $HOME/.yarn/bin
 )
 
 # Personal Aliases
@@ -56,6 +57,7 @@ alias zr='source ~/.zshrc'
 alias ve='vim ~/.vimrc'
 alias gg='git grep'
 function vgg() { nvim `git grep --files-with-matches "$@"`; }
+function fgg() { nvim `find . -type f -name "$@"`; }
 
 # Devices nonsense
 # connect bluetooth headphones
@@ -80,6 +82,9 @@ alias kaggle-up='~/kaggle/kaggleazure/web/dev/up.sh --no-web --no-frontend'
 alias kaggle-up-full='~/kaggle/kaggleazure/web/dev/up.sh'
 alias kaggle-down='~/kaggle/kaggleazure/web/dev/down.sh'
 alias kaggle-tunnel='~/kaggle/kaggleazure/web/dev/tunnel.sh'
+
+#RS
+alias runescape='GDK_SCALE=2 ~/bin/runelite'
 
 # Global Aliases
 alias -g ...='../..'
@@ -121,5 +126,5 @@ export NVM_DIR="$HOME/.nvm"
 export fpath=(/home/michaelaaron/bin/wd $fpath)
 
 wd() {
-  . /home/michaelaaron/bin/wd/wd.sh
+  . /usr/bin/wd/wd.sh
 }

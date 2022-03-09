@@ -2,7 +2,7 @@
 # a bit hacky, but easiest way to force the script to run from the directory where it lives
 cd "${0%/*}"
 # dependencies
-sudo apt install git zsh i3 rxvt-unicode
+sudo apt install zsh i3 rxvt-unicode neovim
 git submodule init
 git submodule update
 # x11

@@ -145,7 +145,7 @@ if dein#load_state('~/.vim/dein')
   endif
 
   " Required:
-  " call dein#update()
+  call dein#update()
   call dein#end()
   call dein#save_state()
 endif

@@ -4,13 +4,14 @@
 export DESKTOP_SESSION=cinnamon
 
 # avoid SSH_AUTH_SOCK errors
-eval $(keychain --eval --agents ssh id_rsa)
+# eval $(keychain --eval --agents ssh id_rsa)
+eval $(ssh-agent)
+
+#background color
+xsetroot -solid "#4f3d61"
 
 # XTerm is being weird with Xresources, use urxvt instead
-export TERMINAL=urxvt
-
-# Chrome seems to flicker without xcompmgr on Rodete
-xcompmgr -c &
+# export TERMINAL=urxvt
 
 # Start wmi3
 exec i3

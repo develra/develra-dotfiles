@@ -108,7 +108,7 @@ bindsym Mod1+minus scratchpad show
 # switch to workspace
 bindsym Mod1+1 workspace 1
 bindsym Mod1+2 workspace 2
-bindsym Mod1+3 workspace 4
+bindsym Mod1+3 workspace 3
 bindsym Mod1+4 workspace 4
 bindsym Mod1+5 workspace 5
 bindsym Mod1+6 workspace 6
@@ -170,16 +170,6 @@ bindsym Mod1+Shift+z exec i3lock -c 000000 && xset dpms force off
 bar {
         status_command i3status
 }
-
-# Screen brightness controls
-# bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
-bindsym XF86MonBrightnessDown exec "/usr/bin/xrandr --output eDP-1 --brightness .6"
-bindsym XF86MonBrightnessUp exec "/usr/bin/xrandr --output eDP-1 --brightness .9"
-
-# Audio controls
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% && killall -SIGUSR1 i3status
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% && killall -SIGUSR1 i3status
-bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle && killall -SIGUSR1 i3status
 
 # Lemme know when I should update
 exec /usr/share/goobuntu-indicator/goobuntu_indicator.py

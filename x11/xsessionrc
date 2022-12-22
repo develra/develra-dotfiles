@@ -8,10 +8,10 @@ export DESKTOP_SESSION=cinnamon
 eval $(ssh-agent)
 
 #background color
-xsetroot -solid "#4f3d61"
+xsetroot -solid "#635b73"
 
-# XTerm is being weird with Xresources, use urxvt instead
-# export TERMINAL=urxvt
+# Chrome seems to flicker without xcompmgr on Rodete
+xcompmgr -c &
 
 # Start wmi3
 exec i3

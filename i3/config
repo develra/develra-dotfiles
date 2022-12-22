@@ -165,17 +165,22 @@ bindsym Mod1+r mode "resize"
 # zzz
 bindsym Mod1+Shift+z exec i3lock -c 000000 && xset dpms force off
 
+# Thinkpad media and brightness keys
+bindsym XF86MonBrightnessUp exec xbacklight +10
+bindsym XF86MonBrightnessDown exec xbacklight -10
+bindsym XF86AudioMute exec pactl -- set-sink-mute 0 toggle
+bindsym XF86AudioRaiseVolume exec pactl -- set-sink-volume 0 +10%
+bindsym XF86AudioLowerVolume exec pactl -- set-sink-volume 0 -10%
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
+        status_command i3status -c ~/.i3/i3status.conf
 }
 
 # Lemme know when I should update
 exec /usr/share/goobuntu-indicator/goobuntu_indicator.py
 
-#
-exec volumeicon 
 exec nm-applet
 #######################################################################
 # automatically start i3-config-wizard to offer the user to create a
@@ -186,4 +191,4 @@ exec nm-applet
 #
 # Please remove the following exec line:
 #######################################################################
-exec i3-config-wizard
+# exec i3-config-wizard

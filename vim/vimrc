@@ -1,5 +1,5 @@
 " Use Vim settings, rather then Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
+"" This must be first, because it changes other options as a side effect.
 set nocompatible
 
 " ================ General Config ====================
@@ -18,17 +18,19 @@ autocmd FileType qf setlocal wrap
 
 " ===============  Plugin Configuration ================ 
 filetype plugin on
+" Python
+let g:python3_host_prog='usr/bin/python3'
 " Golden Ratio
 let g:golden_ratio_exclude_nonmodifiable = 1
 let g:golden_ratio_autocommand = 0
 " MRU
-let MRU_Max_Entries = 1000
+let MRU_Max_Entries = 10000
 " NerdTree
 let NERDTreeDirArrows = 1
 let g:NERDTreeWinSize = 50
 let NERDTreeQuitOnOpen=1
 " CoC Start
-let g:coc_global_extensions=['coc-tsserver', 'coc-tslint-plugin', 'coc-stylelint', 'coc-styled-components', 'coc-prettier', 'coc-jest']
+" let g:coc_global_extensions=['coc-tsserver', 'coc-tslint-plugin', 'coc-stylelint', 'coc-styled-components', 'coc-prettier', 'coc-jest']
 " Give more space for displaying messages.
 set cmdheight=2
 
@@ -39,85 +41,23 @@ set updatetime=300
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
-if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-" Enable scrolling in floating windows
-inoremap <nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1, 1)\<cr>" : "\<Right>"
-inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0, -1)\<cr>" : "\<Left>"
-
 augroup CloseLoclistWindowGroup
-  autocmd!
-  autocmd QuitPre * if empty(&buftype) | lclose | endif
+   autocmd!
+   autocmd QuitPre * if empty(&buftype) | lclose | endif
 augroup END
-"make tab cycle autocomplete suggestions forward
+" "make tab cycle autocomplete suggestions forward
 inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" : "\<TAB>"
-
-"make shift-tab cycle autocomplete suggestions backward
-inoremap <silent><expr> <S-Tab>
-      \ pumvisible() ? "\<C-p>" : "\<S-TAB>"
-" CoC End
+ 
+ "make shift-tab cycle autocomplete suggestions backward
+ inoremap <silent><expr> <S-Tab>
+       \ pumvisible() ? "\<C-p>" : "\<S-TAB>"
 " CtrlP
-let g:ctrlp_custom_ignore = 'node_modules'
-" let g:ctrlp_working_path_mode = 'c'
-let g:ctrlp_user_command = 'find $HOME/kaggle/kaggleazure/typescript $HOME/kaggle/kaggleazure/Kaggle.Web/Views -type f -iname "*.ts*" ! -iname "*.d.ts*" && true %s'
-let g:ctrlp_max_files=250000
 " ================ Initialize Plugins ================
 "
 set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
@@ -136,12 +76,24 @@ if dein#load_state('~/.vim/dein')
   call dein#add('herringtondarkholme/yats.vim')
   call dein#add('scrooloose/nerdtree')
   call dein#add('yegappan/mru')
-  call dein#add('kien/ctrlp.vim')
   call dein#add('tpope/vim-fugitive')
   call dein#add('tpope/vim-rhubarb')
+  call dein#add('vim-test/vim-test')
   call dein#add('junegunn/vim-easy-align')
   if has('nvim')
-      call dein#add('neoclide/coc.nvim', {'merged':0, 'rev': 'release'})
+    call dein#add('neovim/nvim-lspconfig')
+    call dein#add('nvim-lua/plenary.nvim')
+    call dein#add('kkharji/sqlite.lua')
+    call dein#add('hrsh7th/nvim-cmp')
+    call dein#add('hrsh7th/cmp-nvim-lsp')
+    call dein#add('hrsh7th/cmp-buffer')
+    call dein#add('hrsh7th/cmp-path')
+    call dein#add('hrsh7th/cmp-cmdline')
+    call dein#add('nvim-treesitter/nvim-treesitter')
+    call dein#add('jose-elias-alvarez/nvim-lsp-ts-utils')
+    call dein#add('nvim-telescope/telescope.nvim')
+    call dein#add('nvim-telescope/telescope-frecency.nvim')
+    call dein#add('jose-elias-alvarez/null-ls.nvim')
   endif
 
   " Required:
@@ -153,6 +105,9 @@ endif
 if dein#check_install()
   call dein#install()
 endif
+
+lua require('lsp')
+lua require('telescope-config')
 
 " ================ Syntax and Colors =================
 "turn on syntax highlighting
@@ -216,45 +171,38 @@ set ignorecase      " Ignore case when searching...
 set smartcase       " ...unless we type a capital
 
 " ============== Key Bindings ========================
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-" Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
+" vim-test
+let g:test#javascript#runner = 'jest'
+let g:root_markers = ['package.json', '.git/']
+function! s:RunVimTest(cmd)
+    " I guess this part could be replaced by projectionist#project_root
+    for marker in g:root_markers
+        let marker_file = findfile(marker, expand('%:p:h') . ';')
+        if strlen(marker_file) > 0
+            let g:test#project_root = fnamemodify(marker_file, ":p:h")
+            break
+        endif
+        let marker_dir = finddir(marker, expand('%:p:h') . ';')
+        if strlen(marker_dir) > 0
+            let g:test#project_root = fnamemodify(marker_dir, ":p:h")
+            break
+        endif
+    endfor
+
+    execute a:cmd
+endfunction
+nnoremap <leader>tn :call <SID>RunVimTest('TestNearest')<CR>
+nnoremap <leader>tf :call <SID>RunVimTest('TestFile')<CR>
 " buffer next/previous with leader
 nnoremap <leader>bn :bn<CR>
 nnoremap <leader>bp :bp<CR>
 " copy current filename into system clipboard - mnemonic: (c)urrent(f)ilename
 nnoremap <silent> <leader>cf :let @* = expand("%:~")<CR>
-" Show all diagnostics.
-nnoremap <silent><nowait> <leader>ca  :<C-u>CocList diagnostics<cr>
-" Manage extensions.
-nnoremap <silent><nowait> <leader>ce  :<C-u>CocList extensions<cr>
-" Show commands.
-nnoremap <silent><nowait> <leader>cc  :<C-u>CocList commands<cr>
-" Find symbol of current document.
-nnoremap <silent><nowait> <leader>co  :<C-u>CocList outline<cr>
-" Search workspace symbols.
-nnoremap <silent><nowait> <leader>cs  :<C-u>CocList -I symbols<cr>
-" Resume latest coc list.
-nnoremap <silent><nowait> <leader>cp  :<C-u>CocListResume<CR>
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <leader>di :CocDiagnostics<CR> 
-nmap <leader>dn <Plug>(coc-diagnostic-next)
-nmap <leader>dp <Plug>(coc-diagnostic-prev)
-" Open CtrlP in find-all mode 
-nnoremap <silent> <leader>fa :CtrlPMixed<CR>
 " Fugitive Git Bindings
 nnoremap <leader>fb :Git blame<CR>
 nnoremap <leader>fo :GBrowse<CR>
 " Open the project tree and expose current file in the nerdtree with Leader+fe
 nnoremap <silent> <leader>fe :NERDTreeFind<CR>:vertical<CR>
-" Open CtrlP in file-finder mode 
-nnoremap <silent> <leader>ff :CtrlP<CR>
-" Formatting selected code.
-xmap <leader>fm  <Plug>(coc-format-selected)
-nmap <leader>fm  <Plug>(coc-format-selected)
 "quickfix window navigation
 nnoremap <leader>j :cnext<CR>
 nnoremap <leader>k :cprev<CR>
@@ -262,27 +210,8 @@ nnoremap <leader>k :cprev<CR>
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
-" GoTo code navigation.
-nmap <leader>gd <Plug>(coc-definition)
-nmap <leader>gy <Plug>(coc-type-definition)
-nmap <leader>gi <Plug>(coc-implementation)
-nmap <leader>gu <Plug>(coc-references)
 " leader+gr to run GoldenRatio
 nnoremap <leader>gr :GoldenRatioToggle<CR>
-" leader+mr to run MRU
-nnoremap <leader>mr :MRU<CR>
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-" Run jest for current project
-nnoremap <leader>tp :call  CocAction('runCommand', 'jest.projectTest')<CR>
-" Run jest for current file
-nnoremap <leader>tf :call  CocAction('runCommand', 'jest.fileTest', ['%'])<CR>
-" Run jest for current test
-nnoremap <leader>tt :call CocAction('runCommand', 'jest.singleTest')<CR>
-" Init jest in current cwd, require global jest command exists
-nnoremap <leader>ti :call CocAction('runCommand', 'jest.init')<CR>
 "(v)im (r)eload
 nmap <silent> vr :so %<CR>
 " Create vertical window splits easier. 
@@ -291,8 +220,10 @@ nnoremap <silent> vv <C-w>v
 cmap w!! w !sudo tee % >/dev/null
 " leader+z to toggle folds
 nnoremap <leader>z za
-"Clear current search highlight by double tapping //
+" Clear current search highlight by double tapping //
 nmap <silent> // :nohlsearch<CR>
+" MRU
+nnoremap <leader>mr :MRU<CR>
 
 " Move between vim split windows by using the arrow keys
 nnoremap <silent> <Left> <C-w>h

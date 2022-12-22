@@ -29,8 +29,6 @@ let MRU_Max_Entries = 10000
 let NERDTreeDirArrows = 1
 let g:NERDTreeWinSize = 50
 let NERDTreeQuitOnOpen=1
-" CoC Start
-" let g:coc_global_extensions=['coc-tsserver', 'coc-tslint-plugin', 'coc-stylelint', 'coc-styled-components', 'coc-prettier', 'coc-jest']
 " Give more space for displaying messages.
 set cmdheight=2
 

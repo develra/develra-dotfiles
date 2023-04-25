@@ -183,6 +183,10 @@ exec /usr/share/goobuntu-indicator/goobuntu_indicator.py
 
 # allows config of networks on the status bar
 exec nm-applet
+
+# Pls tell me when my battery is low
+# exec xfce4-power-manager
+
 #######################################################################
 # automatically start i3-config-wizard to offer the user to create a
 # keysym-based config which used their favorite modifier (alt or windows)

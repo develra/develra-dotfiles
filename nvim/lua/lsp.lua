@@ -1,6 +1,15 @@
 local cmp = require'cmp'
 -- Set up nvim-cmp.
 cmp.setup({
+  snippet = {
+    -- REQUIRED - you must specify a snippet engine
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+      -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+    end,
+  },
   window = { -- completion = cmp.config.window.bordered(),
     -- documentation = cmp.config.window.bordered(),
   },
@@ -13,7 +22,7 @@ cmp.setup({
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
-    -- { name = 'vsnip' }, -- For vsnip users.
+    { name = 'vsnip' },
     -- { name = 'luasnip' }, -- For luasnip users.
     -- { name = 'ultisnips' }, -- For ultisnips users.
     -- { name = 'snippy' }, -- For snippy users.
@@ -59,16 +68,13 @@ vim.keymap.set('n', '<leader>di', vim.diagnostic.setloclist, opts)
 local lsp_formatting = function(bufnr)
     vim.lsp.buf.format({
         filter = function(client)
-            -- apply whatever logic you want (in this example, we'll only use null-ls)
             return client.name == "null-ls"
         end,
         bufnr = bufnr,
     })
 end
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
+
 local on_attach = function(client, bufnr)
-  -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- auto-format on write
@@ -82,9 +88,6 @@ local on_attach = function(client, bufnr)
             end,
         })
     end
-  -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-
   local bufopts = { noremap=true, silent=true, buffer=bufnr }
   vim.keymap.set('n', '<leader>gD', vim.lsp.buf.declaration, bufopts)
   vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, bufopts)
@@ -133,6 +136,7 @@ require('lspconfig')['tsserver'].setup{
 require('lspconfig')['csharp_ls'].setup{
     on_attach = on_attach,
     capabilities = capabilities,
+    root_dir = require('lspconfig').util.root_pattern(".git"),
 }
 
 require("null-ls").setup({
@@ -140,6 +144,9 @@ require("null-ls").setup({
     require("null-ls").builtins.formatting.prettierd,
     require("null-ls").builtins.diagnostics.eslint_d,
     require("null-ls").builtins.code_actions.eslint_d,
+    require("null-ls").builtins.diagnostics.stylelint.with({
+     extra_filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact"}
+    })
   },
   on_attach = on_attach
 })

@@ -13,7 +13,6 @@ ln -sf $(pwd)/i3 ~/.i3
 # zsh
 ln -sf $(pwd)/zsh/zshrc ~/.zshrc
 # neovim
-mkdir -p ~/.config/nvim/
-ln -sf $(pwd) ~/.config/nvim
+ln -sf $(pwd)/nvim ~/.config/nvim
 # Done
 echo "Develra Dotfiles applied - logout and login to apply changes"

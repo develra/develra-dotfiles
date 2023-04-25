@@ -55,20 +55,13 @@ alias clear='clear -x'
 alias ze='vim ~/.zshrc'
 alias zr='source ~/.zshrc'
 alias ve='vim ~/.config/nvim/init.vim'
-alias ce='vim ~/.config/nvim/coc-settings.json'
 alias gg='git grep'
 function vgg() { nvim `git grep --files-with-matches "$@"`; }
 function fgg() { nvim `find . -type f -name "$@"`; }
 
 # Devices nonsense
-# connect bluetooth headphones
-alias cah='echo "connect 70:88:6B:90:09:05" | bluetoothctl'
 # connect monitor home
-alias cmh='xrandr --output HDMI-1 --auto --panning 3840x2160+3840+0 --scale 1.5x1.5 --right-of eDP-1'
-# connect monitor work
-alias cmw='xrandr --output HDMI-1 --auto --panning 3840x2160+3840+0 --scale 2x1.8 --right-of eDP-1'
-# connect monitor on treadmill
-alias cmt='xrandr --output HDMI-1 --auto --scale 2x2 --above eDP-1'
+alias cmh='xrandr --output HDMI1 --auto --panning 3840x2160+3840+0 --scale 1.5x1.5 --right-of eDP1'
 # connect monitor self (reset after disconnect)
 alias cms='xrandr --auto'
 

@@ -87,11 +87,13 @@ if dein#load_state('~/.vim/dein')
     call dein#add('hrsh7th/cmp-buffer')
     call dein#add('hrsh7th/cmp-path')
     call dein#add('hrsh7th/cmp-cmdline')
-    call dein#add('nvim-treesitter/nvim-treesitter')
+    call dein#add('hrsh7th/vim-vsnip')
+    call dein#add('hrsh7th/vim-vsnip-integ')
     call dein#add('jose-elias-alvarez/nvim-lsp-ts-utils')
     call dein#add('nvim-telescope/telescope.nvim')
     call dein#add('nvim-telescope/telescope-frecency.nvim')
     call dein#add('jose-elias-alvarez/null-ls.nvim')
+    call dein#add('nvim-tree/nvim-web-devicons')
   endif
 
   " Required:
@@ -171,6 +173,7 @@ set smartcase       " ...unless we type a capital
 " ============== Key Bindings ========================
 " vim-test
 let g:test#javascript#runner = 'jest'
+let g:test#csharp#runner = 'dotnettest'
 let g:root_markers = ['package.json', '.git/']
 function! s:RunVimTest(cmd)
     " I guess this part could be replaced by projectionist#project_root
@@ -197,7 +200,7 @@ nnoremap <leader>bp :bp<CR>
 " copy current filename into system clipboard - mnemonic: (c)urrent(f)ilename
 nnoremap <silent> <leader>cf :let @* = expand("%:~")<CR>
 " Fugitive Git Bindings
-nnoremap <leader>fb :Git blame<CR>
+nnoremap <leader>gb :Git blame<CR>
 nnoremap <leader>fo :GBrowse<CR>
 " Open the project tree and expose current file in the nerdtree with Leader+fe
 nnoremap <silent> <leader>fe :NERDTreeFind<CR>:vertical<CR>
@@ -228,4 +231,7 @@ nnoremap <silent> <Left> <C-w>h
 nnoremap <silent> <Right> <C-w>l
 nnoremap <silent> <Up> <C-w>k
 nnoremap <silent> <Down> <C-w>j
+" mov vim splits with ctrl h/l
+nnoremap <silent> <C-l> <C-w>x<C-w>l
+nnoremap <silent> <C-h> <C-w>h<C-w>x
 " ================ Experiments =======================

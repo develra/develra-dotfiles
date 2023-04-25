@@ -11,7 +11,7 @@ eval $(ssh-agent)
 xsetroot -solid "#635b73"
 
 # Chrome seems to flicker without xcompmgr on Rodete
-xcompmgr -c &
+(sleep 1 && xcompmgr -c) &
 
 # Start wmi3
 exec i3

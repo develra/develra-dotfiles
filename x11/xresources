@@ -1,7 +1,7 @@
 !! 4k screen
-Xft.dpi: 192
+*dpi: 192
 !! Xterm history
-XTerm*saveLines: 50000 
+XTerm*saveLines: 500000 
 !! Xterm fix backspace
 XTerm.vt100.backarrowKey: false
 XTerm.ttyModes: erase ^?

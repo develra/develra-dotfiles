@@ -17,7 +17,13 @@ let mapleader=" "               "Change leader to spacebar
 autocmd FileType qf setlocal wrap
 
 " ===============  Plugin Configuration ================ 
+
 filetype plugin on
+"OmniSharp
+" let g:OmniSharp_server_use_mono = 1
+let g:OmniSharp_server_use_net6 = 1
+let g:OmniSharp_highlighting = 0
+
 " Python
 let g:python3_host_prog='usr/bin/python3'
 " Golden Ratio
@@ -58,17 +64,17 @@ inoremap <silent><expr> <Tab>
 " CtrlP
 " ================ Initialize Plugins ================
 "
-set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
+set runtimepath+=~/.config/nvim/dein/repos/github.com/Shougo/dein.vim
 
-if dein#load_state('~/.vim/dein')
-  call dein#begin('~/.vim/dein')
+if dein#load_state('~/.config/nvim/dein')
+  call dein#begin('~/.config/nvim/dein')
 
   " Let dein manage dein
   " Required:
-  call dein#add('~/.vim/dein/repos/github.com/Shougo/dein.vim')
+  call dein#add('~/.config/nvim/dein/repos/github.com/Shougo/dein.vim')
 
   " Add or remove your plugins here:
-  call dein#add('morhetz/gruvbox')
+  call dein#add('luisiacc/gruvbox-baby')
   call dein#add('roman/golden-ratio')
   call dein#add('pangloss/vim-javascript')
   call dein#add('herringtondarkholme/yats.vim')
@@ -94,6 +100,9 @@ if dein#load_state('~/.vim/dein')
     call dein#add('nvim-telescope/telescope-frecency.nvim')
     call dein#add('jose-elias-alvarez/null-ls.nvim')
     call dein#add('nvim-tree/nvim-web-devicons')
+    call dein#add('nvim-treesitter/nvim-treesitter')
+    call dein#add('OmniSharp/omnisharp-vim')
+    call dein#add('Hoffs/omnisharp-extended-lsp.nvim')
   endif
 
   " Required:
@@ -112,9 +121,9 @@ lua require('telescope-config')
 " ================ Syntax and Colors =================
 "turn on syntax highlighting
 syntax on
-set background=dark
-let g:solarized_termcolors=256
-colorscheme gruvbox
+" set background=dark
+" let g:solarized_termcolors=256
+colorscheme gruvbox-baby
 set synmaxcol=500
 set nocursorline
 " Display tabs and trailing spaces visually

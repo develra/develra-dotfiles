@@ -61,7 +61,7 @@ function fgg() { nvim `find . -type f -name "$@"`; }
 
 # Devices nonsense
 # connect monitor home
-alias cmh='xrandr --output HDMI1 --auto --panning 3840x2160+3840+0 --scale 1.5x1.5 --right-of eDP1'
+alias cmh='xrandr --output HDMI-1 --auto --panning 3840x2160+3840+0 --scale 1.5x1.5 --right-of eDP-1'
 # connect monitor self (reset after disconnect)
 alias cms='xrandr --auto'
 
@@ -115,16 +115,16 @@ export NRF5_TOOLS_ROOT=${HOME}/github/openweave-tools/nRF5-CLI
 export GNU_INSTALL_ROOT=${HOME}/github/openweave-tools/gcc-arm-none-eabi-7-2018-q2-update-linux/bin
 export PATH=${PATH}:${NRF5_TOOLS_ROOT}/nrfjprog
 
+#Kaggle
+export PATH=$PATH:/home/michaelaaron/kaggle/kaggleazure/web/dev
+
 #NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 # Warp Drive
 export fpath=(${HOME}/bin/wd $fpath)
-
 wd() {
   . ${HOME}/bin/wd/wd.sh
 }
-wd() {
-  . /home/michaelaaron/bin/wd/wd.sh
-}
+

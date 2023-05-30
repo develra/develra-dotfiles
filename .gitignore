@@ -4,4 +4,9 @@ vim/dein/.cache
 vim/dein/repos/github.com/.cache
 vim/dein/cache_*
 vim/dein/state_*
-
+nvim/undodir
+nvim/.netrwhist
+nvim/dein/.cache
+nvim/dein/repos/github.com/.cache
+nvim/dein/cache_*
+nvim/dein/state_*

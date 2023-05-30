@@ -107,6 +107,26 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, bufopts)
 end
 
+
+local function filter(arr, fn)
+  if type(arr) ~= "table" then
+    return arr
+  end
+
+  local filtered = {}
+  for k, v in pairs(arr) do
+    if fn(v, k, arr) then
+      table.insert(filtered, v)
+    end
+  end
+
+  return filtered
+end
+
+local function filterReactDTS(value)
+  return string.match(value.targetUri, 'react/index.d.ts') == nil
+end
+
 require('lspconfig')['tsserver'].setup{
   -- root_dir = require('lspconfig').util.root_pattern(".git"),
   on_attach = function(client, buffer)
@@ -131,14 +151,62 @@ require('lspconfig')['tsserver'].setup{
     on_attach(client, buffer)
   end,
   capabilities = capabilities,
+   -- other options
+  handlers = {
+    -- Ignore react types when using go to definition
+    ['textDocument/definition'] = function(err, result, method, ...)
+      if vim.tbl_islist(result) and #result > 1 then
+        local filtered_result = filter(result, filterReactDTS)
+        return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
+      end
+
+      vim.lsp.handlers['textDocument/definition'](err, result, method, ...)
+    end
+  }
 }
 
-require('lspconfig')['csharp_ls'].setup{
-    on_attach = on_attach,
-    capabilities = capabilities,
-    root_dir = require('lspconfig').util.root_pattern(".git"),
+-- require('lspconfig')['csharp_ls'].setup{
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+--   root_dir = require('lspconfig').util.root_pattern(".git"),
+-- }
+
+-- local pid = vim.fn.getpid()
+-- local omnisharp_bin = "/home/michaelaaron/dotnet/omnisharp/OmniSharp.dll"
+-- cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) };
+
+require'lspconfig'.omnisharp.setup{
+   handlers = {
+    ["textDocument/definition"] = require('omnisharp_extended').handler,
+   },
+   cmd = {"dotnet", "/home/michaelaaron/dotnet/omnisharp/OmniSharp.dll"},
+   on_attach = on_attach,
+   capabilities = capabilities,
+   root_dir = require('lspconfig').util.root_pattern(".git"),
 }
 
+-- hacks for omnisharp as semantic tokens are a bit messeed up
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    local function toSnakeCase(str)
+      return string.gsub(str, "%s*[- ]%s*", "_")
+    end
+
+    if client.name == 'omnisharp' then
+      local tokenModifiers = client.server_capabilities.semanticTokensProvider.legend.tokenModifiers
+      for i, v in ipairs(tokenModifiers) do
+        tokenModifiers[i] = toSnakeCase(v)
+      end
+      local tokenTypes = client.server_capabilities.semanticTokensProvider.legend.tokenTypes
+      for i, v in ipairs(tokenTypes) do
+        tokenTypes[i] = toSnakeCase(v)
+      end
+    end
+  end,
+})
+
+-- nullls setup
 require("null-ls").setup({
   sources = {
     require("null-ls").builtins.formatting.prettierd,
@@ -150,3 +218,38 @@ require("null-ls").setup({
   },
   on_attach = on_attach
 })
+
+
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all" (the five listed parsers should always be installed)
+  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "tsx", "typescript", "javascript" },
+
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- Automatically install missing parsers when entering buffer
+  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+  auto_install = true,
+
+  highlight = {
+    enable = true,
+
+    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
+    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
+    -- the name of the parser)
+    -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
+    disable = function(lang, buf)
+        local max_filesize = 1000 * 1024 -- 1000 KB
+        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+        if ok and stats and stats.size > max_filesize then
+            return true
+        end
+    end,
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}

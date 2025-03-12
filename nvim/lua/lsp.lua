@@ -1,4 +1,6 @@
 local cmp = require'cmp'
+-- devcontainer
+require("devcontainer").setup{}
 -- Set up nvim-cmp.
 cmp.setup({
   snippet = {
@@ -74,6 +76,22 @@ local lsp_formatting = function(bufnr)
     })
 end
 
+local lsp_organize_imports_sync = function(bufnr)
+    -- gets the current bufnr if no bufnr is passed
+    if not bufnr then bufnr = vim.api.nvim_get_current_buf() end
+
+    -- params for the request
+    local params = {
+        command = "_typescript.organizeImports",
+        arguments = {vim.api.nvim_buf_get_name(bufnr)},
+        title = ""
+    }
+
+    -- perform a syncronous request
+    -- 500ms timeout depending on the size of file a bigger timeout may be needed
+    vim.lsp.buf_request_sync(bufnr, "workspace/executeCommand", params, 500)
+end
+
 local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -84,6 +102,7 @@ local on_attach = function(client, bufnr)
             group = augroup,
             buffer = bufnr,
             callback = function()
+                -- lsp_organize_imports_sync(bufnr)
                 lsp_formatting(bufnr)
             end,
         })
@@ -127,66 +146,31 @@ local function filterReactDTS(value)
   return string.match(value.targetUri, 'react/index.d.ts') == nil
 end
 
-require('lspconfig')['tsserver'].setup{
-  -- root_dir = require('lspconfig').util.root_pattern(".git"),
-  on_attach = function(client, buffer)
-    local ts_utils = require("nvim-lsp-ts-utils")
-    -- defaults
-    ts_utils.setup({
-      -- update imports on file move
-      update_imports_on_move = true,
-      require_confirmation_on_move = true,
-      watch_dir = true,
-    })
-
-    -- required to fix code action ranges and filter diagnostics
-    ts_utils.setup_client(client)
-
-    -- no default maps, so you may want to define some here
-    local bufopts = { noremap=true, silent=true, buffer=bufnr }
-    vim.keymap.set("n", "<leader>oi", ":TSLspOrganize<CR>", bufopts)
-    vim.keymap.set("n", "<leader>rf", ":TSLspRenameFile<CR>", bufopts)
-    vim.keymap.set("n", "<leader>ic", ":TSLspImportCurrent<CR>", bufopts)
-    vim.keymap.set("n", "<leader>ia", ":TSLspImportAll<CR>", bufopts)
-    on_attach(client, buffer)
-  end,
-  capabilities = capabilities,
-   -- other options
-  handlers = {
-    -- Ignore react types when using go to definition
-    ['textDocument/definition'] = function(err, result, method, ...)
-      if vim.tbl_islist(result) and #result > 1 then
-        local filtered_result = filter(result, filterReactDTS)
-        return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
-      end
-
-      vim.lsp.handlers['textDocument/definition'](err, result, method, ...)
-    end
-  }
-}
-
+ 
 -- require('lspconfig')['csharp_ls'].setup{
---   on_attach = on_attach,
---   capabilities = capabilities,
---   root_dir = require('lspconfig').util.root_pattern(".git"),
+--  on_attach = on_attach,
+-- capabilities = capabilities,
+-- root_dir = require('lspconfig').util.root_pattern(".git"),
 -- }
 
 -- local pid = vim.fn.getpid()
--- local omnisharp_bin = "/home/michaelaaron/dotnet/omnisharp/OmniSharp.dll"
+-- local omnisharp_bin = "/git/omnisharp/OmniSharp.dll"
 -- cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) };
+ -- cmd = {"docker", "exec", "kaggle-web-dev", "sh", "-c" "\"/usr/bin/dotnet /git/omnisharp/OmniSharp.dll $@; exit \$?\""},
+ -- cmd = {"dotnet", "/home/michaelaaron/kaggle/omnisharp/OmniSharp.dll"},
 
-require'lspconfig'.omnisharp.setup{
-   handlers = {
+ require'lspconfig'.omnisharp.setup{
+    handlers = {
     ["textDocument/definition"] = require('omnisharp_extended').handler,
    },
-   cmd = {"dotnet", "/home/michaelaaron/dotnet/omnisharp/OmniSharp.dll"},
+   cmd = {"/home/michaelaaron/test.sh"},
    on_attach = on_attach,
    capabilities = capabilities,
    root_dir = require('lspconfig').util.root_pattern(".git"),
-}
+ }
 
--- hacks for omnisharp as semantic tokens are a bit messeed up
-vim.api.nvim_create_autocmd("LspAttach", {
+ -- hacks for omnisharp as semantic tokens are a bit messed up
+ vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     local function toSnakeCase(str)
@@ -209,7 +193,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 -- nullls setup
 require("null-ls").setup({
   sources = {
-    require("null-ls").builtins.formatting.prettierd,
+    require("null-ls").builtins.formatting.prettier,
     require("null-ls").builtins.diagnostics.eslint_d,
     require("null-ls").builtins.code_actions.eslint_d,
     require("null-ls").builtins.diagnostics.stylelint.with({
@@ -253,3 +237,122 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
+
+-- require("typescript-tools").setup {
+--   on_attach = function(client, buffer)
+--      local ts_utils = require("nvim-lsp-ts-utils")
+--      -- defaults
+--      ts_utils.setup({
+--        -- update imports on file move
+--        update_imports_on_move = true,
+--        require_confirmation_on_move = true,
+--        watch_dir = true,
+--      })
+--      -- required to fix code action ranges and filter diagnostics
+--      ts_utils.setup_client(client)
+--      -- no default maps, so you may want to define some here
+--      local bufopts = { noremap=true, silent=true, buffer=bufnr }
+--      vim.keymap.set("n", "<leader>oi", ":TSLspOrganize<CR>", bufopts)
+--      vim.keymap.set("n", "<leader>rf", ":TSLspRenameFile<CR>", bufopts)
+--      vim.keymap.set("n", "<leader>ic", ":TSLspImportCurrent<CR>", bufopts)
+--      vim.keymap.set("n", "<leader>ia", ":TSLspImportAll<CR>", bufopts)
+--      on_attach(client, buffer)
+--    end,
+--    capabilities = capabilities,
+--     -- other options
+--    handlers = {
+--      -- Ignore react types when using go to definition
+--      ['textDocument/definition'] = function(err, result, method, ...)
+--        if vim.tbl_islist(result) and #result > 1 then
+--          local filtered_result = filter(result, filterReactDTS)
+--          return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
+--        end
+--  
+--        vim.lsp.handlers['textDocument/definition'](err, result, method, ...)
+--      end
+--    },
+--    settings = {
+--      -- spawn additional tsserver instance to calculate diagnostics on it
+--      separate_diagnostic_server = true,
+--      -- "change"|"insert_leave" determine when the client asks the server about diagnostic
+--      publish_diagnostic_on = "change",
+--      -- array of strings("fix_all"|"add_missing_imports"|"remove_unused"|
+--      -- "remove_unused_imports"|"organize_imports") -- or string "all"
+--      -- to include all supported code actions
+--      -- specify commands exposed as code_actions
+--      expose_as_code_action = {},
+--      -- string|nil - specify a custom path to `tsserver.js` file, if this is nil or file under path
+--      -- not exists then standard path resolution strategy is applied
+--      tsserver_path = nil,
+--      -- specify a list of plugins to load by tsserver, e.g., for support `styled-components`
+--      -- (see 💅 `styled-components` support section)
+--      tsserver_plugins = {},
+--      -- this value is passed to: https://nodejs.org/api/cli.html#--max-old-space-sizesize-in-megabytes
+--      -- memory limit in megabytes or "auto"(basically no limit)
+--      tsserver_max_memory = "auto",
+--      -- described below
+--      tsserver_format_options = {},
+--      tsserver_file_preferences = {},
+--      -- locale of all tsserver messages, supported locales you can find here:
+--      -- https://github.com/microsoft/TypeScript/blob/3c221fc086be52b19801f6e8d82596d04607ede6/src/compiler/utilitiesPublic.ts#L620
+--      tsserver_locale = "en",
+--      -- mirror of VSCode's `typescript.suggest.completeFunctionCalls`
+--      complete_function_calls = false,
+--      include_completions_with_insert_text = true,
+--      -- CodeLens
+--      -- WARNING: Experimental feature also in VSCode, because it might hit performance of server.
+--      -- possible values: ("off"|"all"|"implementations_only"|"references_only")
+--      code_lens = "off",
+--      -- by default code lenses are displayed on all referencable values and for some of you it can
+--      -- be too much this option reduce count of them by removing member references from lenses
+--      disable_member_code_lens = true,
+--      -- JSXCloseTag
+--      -- WARNING: it is disabled by default (maybe you configuration or distro already uses nvim-ts-autotag,
+--      -- that maybe have a conflict if enable this feature. )
+--      jsx_close_tag = {
+--          enable = false,
+--          filetypes = { "javascriptreact", "typescriptreact" },
+--      }
+--    },
+--  }
+
+require('lspconfig')['ts_ls'].setup{
+   -- root_dir = require('lspconfig').util.root_pattern(".git"),
+   on_attach = function(client, buffer)
+     local ts_utils = require("nvim-lsp-ts-utils")
+     -- defaults
+     ts_utils.setup({
+       -- update imports on file move
+       update_imports_on_move = true,
+       require_confirmation_on_move = true,
+       watch_dir = true,
+     })
+ 
+     -- required to fix code action ranges and filter diagnostics
+     ts_utils.setup_client(client)
+ 
+     -- no default maps, so you may want to define some here
+     local bufopts = { noremap=true, silent=true, buffer=bufnr }
+     vim.keymap.set("n", "<leader>oi", ":TSLspOrganize<CR>", bufopts)
+     vim.keymap.set("n", "<leader>rf", ":TSLspRenameFile<CR>", bufopts)
+     vim.keymap.set("n", "<leader>ic", ":TSLspImportCurrent<CR>", bufopts)
+     vim.keymap.set("n", "<leader>ia", ":TSLspImportAll<CR>", bufopts)
+     on_attach(client, buffer)
+   end,
+   capabilities = capabilities,
+    -- other options
+   handlers = {
+     -- Ignore react types when using go to definition
+     ['textDocument/definition'] = function(err, result, method, ...)
+       if vim.tbl_islist(result) and #result > 1 then
+         local filtered_result = filter(result, filterReactDTS)
+         return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
+       end
+ 
+       vim.lsp.handlers['textDocument/definition'](err, result, method, ...)
+     end
+   }
+ }
+
+require'lspconfig'.jedi_language_server.setup{}
+

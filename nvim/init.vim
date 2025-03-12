@@ -20,7 +20,9 @@ autocmd FileType qf setlocal wrap
 
 filetype plugin on
 "OmniSharp
+let g:OmniSharp_server_path="/home/michaelaaron/test_2.sh"
 " let g:OmniSharp_server_use_mono = 1
+" let g:OmniSharp_server_path="dotnet /home/michaelaaron/kaggle/omnisharp/OmniSharp.dll"
 let g:OmniSharp_server_use_net6 = 1
 let g:OmniSharp_highlighting = 0
 
@@ -95,14 +97,17 @@ if dein#load_state('~/.config/nvim/dein')
     call dein#add('hrsh7th/cmp-cmdline')
     call dein#add('hrsh7th/vim-vsnip')
     call dein#add('hrsh7th/vim-vsnip-integ')
-    call dein#add('jose-elias-alvarez/nvim-lsp-ts-utils')
     call dein#add('nvim-telescope/telescope.nvim')
     call dein#add('nvim-telescope/telescope-frecency.nvim')
     call dein#add('jose-elias-alvarez/null-ls.nvim')
+    call dein#add('develra/typescript-tools.nvim')
+    call dein#add('jose-elias-alvarez/nvim-lsp-ts-utils')
     call dein#add('nvim-tree/nvim-web-devicons')
     call dein#add('nvim-treesitter/nvim-treesitter')
     call dein#add('OmniSharp/omnisharp-vim')
     call dein#add('Hoffs/omnisharp-extended-lsp.nvim')
+    call dein#add('esensar/nvim-dev-container')
+    call dein#add('pappasam/jedi-language-server')
   endif
 
   " Required:
@@ -124,7 +129,7 @@ syntax on
 " set background=dark
 " let g:solarized_termcolors=256
 colorscheme gruvbox-baby
-set synmaxcol=500
+set synmaxcol=1000
 set nocursorline
 " Display tabs and trailing spaces visually
 set list listchars=tab:\ \ ,trail:·
